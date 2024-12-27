@@ -1,15 +1,26 @@
+import { RawAxiosRequestHeaders } from "axios";
+import { ScraperHeaders } from "./Headers";
+import { Product } from "./Product";
+
 export abstract class ProductScraper {
     protected baseUrl: string;
     protected url: string;
-    protected headers: Record<string, string>;
+    protected headers: RawAxiosRequestHeaders;
+    protected enableAgentRotations: boolean;
+    protected timeout: number;
 
-    constructor(baseUrl: string) {
+    constructor({
+        baseUrl, 
+        enableAgentRotations,
+        headers,
+        timeout
+    }: ScraperHeaders) {
         this.baseUrl = baseUrl;
         this.url = '';
-        this.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
-        };
+        this.enableAgentRotations = enableAgentRotations;
+        this.headers = headers;
+        this.timeout = timeout;
     }
 
-    abstract scrape(url: string, headers?: Record<string, string>): Promise<any>;
+    abstract scrape(url: string): Promise<Product | null>;
 }

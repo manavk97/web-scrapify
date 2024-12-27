@@ -6,5 +6,5 @@ export interface Product {
     ratingCount: string | null;
     brand: string | null;
     description: string | null;
-    features: string[] | null;
+    features: string[];
 }
