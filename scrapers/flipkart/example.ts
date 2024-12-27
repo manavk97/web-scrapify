@@ -2,7 +2,7 @@ import { FlipkartScraper } from "./FlipkartScraper";
 
 const scraper = new FlipkartScraper({
     enableAgentRotations: true, // Enable agent rotations
-    // enableLogging: true, // Enable logging
+    enableLogging: true, // Enable logging
     timeout: 30000, // Set timeout to 30 seconds
     baseUrl: 'https://www.flipkart.com', // Set base URL to Flipkart
     headers: { // Set headers

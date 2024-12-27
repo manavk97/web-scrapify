@@ -8,7 +8,6 @@ import { Agents } from '../../agents/Agents';
 import { timer } from '../../utils/Utils';
 
 export class AmazonScraper extends ProductScraper {
-    private logger: Console;
     constructor({
         baseUrl = AMAZON_BASE_URL,
         enableAgentRotations = false,
@@ -21,19 +20,10 @@ export class AmazonScraper extends ProductScraper {
         super({
             baseUrl,
             enableAgentRotations,
+            enableLogging,
             headers,
             timeout
         });
-
-        this.logger = Object.assign({}, console);
-        
-        if(!enableLogging) {
-            this.logger.log = () => {};
-            this.logger.error = () => {};
-            this.logger.info = () => {};
-            this.logger.warn = () => {};
-            this.logger.debug = () => {};
-         }
     }
 
     async scrape(url: string): Promise<Product | null> {
