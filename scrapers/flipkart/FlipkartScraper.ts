@@ -8,6 +8,7 @@ import { Agents } from '../../agents/Agents';
 import { timer } from '../../utils/Utils';
 
 export class FlipkartScraper extends ProductScraper {
+    private logger: Console;
     constructor({
         baseUrl = FLIPKART_BASE_URL,
         enableAgentRotations = false,
@@ -24,44 +25,50 @@ export class FlipkartScraper extends ProductScraper {
             timeout
         });
         
+        this.logger = Object.assign({}, console);
+
         if(!enableLogging) {
-            console.log = () => {};
-            console.error = () => {};
-            console.info = () => {};
-            console.warn = () => {};
-            console.debug = () => {};
+            this.logger.log = () => {};
+            this.logger.error = () => {};
+            this.logger.info = () => {};
+            this.logger.warn = () => {};
+            this.logger.debug = () => {};
          }
     }
 
     async scrape(url: string): Promise<Product | null> {
         const method = async (url: string) => {
             try {
-                console.log('Scraping Flipkart...');
+                this.logger.log('Scraping Flipkart...');
 
                 if(this.enableAgentRotations) {
                     const agent = new Agents();
                     this.headers['User-Agent'] = agent.getAgent();
                 }
-                console.log('Request Headers: ', this.headers);
-                console.log('Request URL: ', `${this.baseUrl}/${url}`);
+                this.logger.log('Request Headers: ', this.headers);
+                this.logger.log('Request URL: ', `${this.baseUrl}/${url}`);
     
                 const { data } = await axios.get(`${this.baseUrl}/${url}`, {  headers: { ...this.headers } });
+
                 const $ = cheerio.load(data);
-                
                 const productInfo: Product = {
-                    title: $('span.B_NuCI').text().trim() || null,
-                    price: $('div._30jeq3').text().trim() || null,
-                    imageUrl: $('img._396cs4').attr('src') || null,
-                    rating: $('div._3LWZlK').text().trim() || null,
-                    ratingCount: $('span._2_R_DZ').text().trim() || null,
-                    brand: $('span._2BhA3M').text().trim() || null,
-                    description: $('div._1mXcCf').text().trim() || null,
-                    features: $('ul._1xgFaf li').map((i, el) => $(el).text().trim()).get() || null,
+                    title: $('h1._6EBuvT span').text().trim() || null,
+                    price: $('div.Nx9bqj.CxhGGd').text().trim() || null,
+                    imageUrl: $('img._0DkuPH').attr('src') || null,
+                    rating: $('div.XQDdHH').first().text().trim() || null,
+                    ratingCount: $('span.Wphh3N span > span').first().text().trim().split(' Ratings')[0] || null,
+                    details: $('.xFVion > ul > li').map((i, el) => $(el).text().trim()).get().reduce((acc, el) => {
+                        const [key, value] = el.split(':').map(s => s.trim());
+                        acc[key] = value;
+                        return acc;
+                    }, {} as Record<string, string>) || null,
+                    description: $('div._4gvKMe').text().trim() || null,
+                    features: $('ul._7eSDEz li').map((i, el) => $(el).text().trim()).get() || null,
                 };
                 
                 return productInfo;
             } catch (error) {
-                console.error('Error scraping Flipkart:', error);
+                this.logger.error('Error scraping Flipkart:', error);
                 return null;
             }
         }

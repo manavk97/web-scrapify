@@ -4,7 +4,7 @@ export interface Product {
     imageUrl: string | null;
     rating: string | null;
     ratingCount: string | null;
-    brand: string | null;
+    details: Record<string, string | null> | null;
     description: string | null;
     features: string[];
 }

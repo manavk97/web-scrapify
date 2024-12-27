@@ -8,6 +8,7 @@ import { Agents } from '../../agents/Agents';
 import { timer } from '../../utils/Utils';
 
 export class AmazonScraper extends ProductScraper {
+    private logger: Console;
     constructor({
         baseUrl = AMAZON_BASE_URL,
         enableAgentRotations = false,
@@ -24,26 +25,28 @@ export class AmazonScraper extends ProductScraper {
             timeout
         });
 
+        this.logger = Object.assign({}, console);
+        
         if(!enableLogging) {
-           console.log = () => {};
-           console.error = () => {};
-           console.info = () => {};
-           console.warn = () => {};
-           console.debug = () => {};
-        }
+            this.logger.log = () => {};
+            this.logger.error = () => {};
+            this.logger.info = () => {};
+            this.logger.warn = () => {};
+            this.logger.debug = () => {};
+         }
     }
 
     async scrape(url: string): Promise<Product | null> {
         const method = async (url: string) => {
             try {
-                console.log('Scraping Amazon...');
+                this.logger.log('Scraping Amazon...');
                 if (this.enableAgentRotations) {
                     const agent = new Agents();
                     this.headers['User-Agent'] = agent.getAgent();
                 }
 
-                console.log('Request Headers: ', this.headers);
-                console.log('Request URL: ', `${this.baseUrl}/${url}`);
+                this.logger.log('Request Headers: ', this.headers);
+                this.logger.log('Request URL: ', `${this.baseUrl}/${url}`);
 
                 const { data } = await axios.get(`${this.baseUrl}/${url}`, { headers: { ...this.headers } });
                 const $ = cheerio.load(data);
@@ -51,17 +54,24 @@ export class AmazonScraper extends ProductScraper {
                 const productInfo: Product = {
                     title: $('#productTitle').text().trim() || null, // Product title
                     imageUrl: $('#percolate-ui-ilm_div img').attr('src') || $('#dp-container img').attr('src') || null, // Product image URL
-                    rating: $('#gridRegion-buybox [data-testid="rating"]').text().trim() || null, // Product rating
-                    ratingCount: $('#acrCustomerReviewText').text().trim() || null, // Rating count
-                    price: $('a-price-symbol').text().trim() + $('a-price-whole').text().trim() + $('a-price-decimal').text().trim() + $('a-price-fraction').text().trim(), // Price
-                    brand: $('#dp-container .grid-logo-image img').attr('alt') || null, // Brand name
+                    rating: $('#acrPopover > span:first-child > a > span:first-child').text().trim().split(' ')[0] || null, // Product rating
+                    ratingCount: $('#acrCustomerReviewText').text().trim().split('ratings')[0].trim() || null, // Rating count
+                    price: $('.priceToPay').text().trim(), // Price
+                    details:  $('table tr').map((i, el) => $(el)).get().reduce((acc, el) => {
+                            const key = el.find('td:first-child').text().trim();
+                            const value = el.find('td:nth-child(2)').text().trim();
+                            if (key) {
+                                acc[key] = value || null;
+                            }
+                            return acc;
+                    }, {} as any) || null,
                     description: $('#productDescription').text().trim() || null, // Product description
                     features: $('#feature-bullets ul li').map((i, el) => $(el).text().trim()).get() || [], // Product features
                 };
 
                 return productInfo;
             } catch (error) {
-                console.error('Error scraping Amazon:', error);
+                this.logger.error('Error scraping Amazon:', error);
                 return null;
             }
         }
