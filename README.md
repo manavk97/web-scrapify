@@ -10,7 +10,7 @@ A simple web scraper that can scrape product details from various e-commerce pla
 ## Amazon Scraper
 
 ```
-import { AmazonScraper } from "./AmazonScraper";
+import { AmazonScraper } from "web-scrapify";
 
 const scraper = new AmazonScraper();
 
@@ -23,7 +23,7 @@ scraper.scrape(productUrl).then((data) => {
 
 ## Flipkart Scraper
 ```
-import { FlipkartScraper } from "./FlipkartScraper";
+import { FlipkartScraper } from "web-scrapify";
 
 const flipkartScraper = new FlipkartScraper();
 
