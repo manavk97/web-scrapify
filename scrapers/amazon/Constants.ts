@@ -1,1 +1,1 @@
-export const AMAZON_BASE_URL = 'https://www.amazon.in';
+export const AMAZON_BASE_URL = 'https://www.amazon.com';
