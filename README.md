@@ -91,6 +91,31 @@ Here’s a table describing each parameter of the HeaderOptions interface, inclu
 
 This table provides a clear overview of the HeaderOptions interface parameters, making it easier to understand their purpose and usage.
 
+## Product Interface
+
+| Property      | Type                                      | Description                                      |
+|---------------|-------------------------------------------|--------------------------------------------------|
+| title         | `string \| null`                          | The title of the product.                        |
+| price         | `string \| null`                          | The price of the product.                        |
+| imageUrl      | `string \| null`                          | The URL of the product image.                    |
+| rating        | `string \| null`                          | The rating of the product.                       |
+| ratingCount   | `string \| null`                          | The number of ratings the product has received.  |
+| details       | `Record<string, string \| null> \| null` | Additional details about the product.            |
+| description   | `string \| null`                          | A description of the product.                    |
+| features      | `string[]`                                | An array of features of the product.             |
+| reviews       | `Review[]`                                | An array of reviews for the product.             |
+
+## Review Interface
+
+| Property      | Type                                      | Description                                      |
+|---------------|-------------------------------------------|--------------------------------------------------|
+| rating        | `string \| null`                          | The rating given in the review.                  |
+| title         | `string \| null`                          | The title of the review.                         |
+| author        | `string \| null`                          | The author of the review.                        |
+| description   | `string \| null`                          | The content of the review.                       |
+| date          | `string \| null`                          | The date the review was written.                 |
+
+
 ## Future Features
 
 - [ ] Add retries
