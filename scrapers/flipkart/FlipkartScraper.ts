@@ -54,6 +54,14 @@ export class FlipkartScraper extends ProductScraper {
                     }, {} as Record<string, string>) || null,
                     description: $('div._4gvKMe').text().trim() || null,
                     features: $('ul._7eSDEz li').map((i, el) => $(el).text().trim()).get() || null,
+                    reviews: $('div.RcXBOT').map((i, el) => {
+                        const rating = $(el).find('div.XQDdHH').text().trim().split(' ')[0] || null;
+                        const review = $(el).find('div.ZmyHeo > div > div').text().trim() || null;
+                        const title = $(el).find('p.z9E0IG').text().trim() || null;
+                        const reviewerName = $(el).find('p._2NsDsF.AwS1CA').first().text().trim() || null;
+                        const date = $(el).find('p._2NsDsF').last().text().trim() || null;
+                        return { rating, review, title, reviewerName, date };
+                    }).get() || null,
                 };
                 
                 return productInfo;

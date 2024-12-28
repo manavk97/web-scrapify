@@ -7,4 +7,5 @@ export interface Product {
     details: Record<string, string | null> | null;
     description: string | null;
     features: string[];
+    reviews: any[];
 }

@@ -57,6 +57,13 @@ export class AmazonScraper extends ProductScraper {
                     }, {} as any) || null,
                     description: $('#productDescription').text().trim() || null, // Product description
                     features: $('#feature-bullets ul li').map((i, el) => $(el).text().trim()).get() || [], // Product features
+                    reviews: $('#cm-cr-dp-review-list li[data-hook="review"]').map((i, el) => {
+                        const title = $(el).find('[data-hook="review-title"] > span').text().trim() || null; // Review title
+                        const date = $(el).find('[data-hook="review-date"]').text().trim() || null; // Review date
+                        const review = $(el).find('[data-hook="review-body"]').text().trim() || null; // Review body
+                        const rating = $(el).find('[data-hook="review-star-rating"] span.a-icon-alt').text().trim() || null; // Review rating
+                        return { title, date, review, rating };
+                    }).get() || [],
                 };
 
                 return productInfo;
