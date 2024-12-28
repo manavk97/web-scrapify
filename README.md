@@ -100,3 +100,9 @@ This table provides a clear overview of the HeaderOptions interface parameters, 
 - [ ] Add Web Search Capability (google, duckduckgo, bing etc..)
 - [ ] Add more documentation
 - [ ] Add more error handling
+
+
+## Contributing & Feature Requests
+
+- If you have any feature requests or suggestions, please feel free to open an issue or submit a PR.
+- Contributions are welcome! Please feel free to submit a PR.
