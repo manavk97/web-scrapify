@@ -13,7 +13,7 @@ A simple web scraper that can scrape product details from various e-commerce pla
 ## Amazon Scraper
 
 ```
-import { AmazonScraper, HeaderOptions } from "web-scrapify";
+import { AmazonScraper, HeaderOptions, Product } from "web-scrapify";
 
 const headers: HeaderOptions = {
     enableAgentRotations: true,
@@ -39,14 +39,14 @@ const scraper = new AmazonScraper(headers);
 
 const productURL = "Solimo-Extra-Durable-Cleaning-Eraser/dp/B08M77515R/ref=sr_1_1_ffob_sspa?_encoding=UTF8&content-id=amzn1.sym.83009b1f-702c-4be7-814b-0240b8f687d2&dib=eyJ2IjoiMSJ9.WjeStSyS-UtpCOFcUJU0C0ckHCNJY1aZA9PWNVc3qmbRJZErSZQm63vX7XbtORshGpfXkgTFSZ1k-azY0kdxLjH8aFiQWBBaFVvAi2h7YsiHOkaHFG2ubcrLhzT48y-CysqYiDvBwnVmuFziFi5IPfl0FWW9N4Pgee3ihxQ1ZrY6YeVNmVH_RG4JEBfL_oRMMs7U2OBMmx1yugmR-jfBChLADGRUtVP6tksfjCSjtXK88En7M0lgIdav1SxM6d_DYk6545ltZwcBsUu13RamO5mcAAS3AjKPdaM69OJypEc.DhGRSGmv-vBrqxQkseb5ZO0RIAu2qS1tF7NEoZsMq3s&dib_tag=se&keywords=cleaning+tools&pd_rd_r=6e139182-a89d-4e25-997f-2955f4c11ad6&pd_rd_w=wFuiM&pd_rd_wg=zVfLd&pf_rd_p=83009b1f-702c-4be7-814b-0240b8f687d2&pf_rd_r=144BC1H67M2M2X0Y99VB&qid=1735278131&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1"
 
-scraper.scrape(productURL).then((data) => {
+scraper.scrape(productURL).then((data : Product | null) => {
     console.log(data);
 });
 ```
 
 ## Flipkart Scraper
 ```
-import { FlipkartScraper, HeaderOptions } from "web-scrapify";
+import { FlipkartScraper, HeaderOptions, Product } from "web-scrapify";
 
 const headers: HeaderOptions = {
     enableAgentRotations: true, // Enable agent rotations
@@ -72,7 +72,7 @@ const scraper = new FlipkartScraper(headers);
 
 const productURL = "emotorad-x1-red-27-5-inches-single-speed-lithium-ion-li-ion-electric-cycle/p/itm830863420d539?pid=ECYH28HFFWQTZWYW&lid=LSTECYH28HFFWQTZWYWXEFGWN&marketplace=FLIPKART&store=abc%2Fulv%2Ftwp&srno=b_1_1&otracker=browse&fm=organic&iid=en_ba7G51hZyaKh1mbny_aCQiMdq62YizF5evHJOdOFh1LQDMNdtP9N36fqiox692HbthuIoCjih2bGcP9BMLYb-PUFjCTyOHoHZs-Z5_PS_w0%3D&ppt=browse&ppn=browse&ssid=kqmfdqknk00000001735280804034";
 
-scraper.scrape(productURL).then((data) => {
+scraper.scrape(productURL).then((data: Product | null) => {
     console.log(data);
 });
 ```
@@ -90,6 +90,31 @@ Here’s a table describing each parameter of the HeaderOptions interface, inclu
 
 
 This table provides a clear overview of the HeaderOptions interface parameters, making it easier to understand their purpose and usage.
+
+## Product Interface
+
+| Property      | Type                                      | Description                                      |
+|---------------|-------------------------------------------|--------------------------------------------------|
+| title         | `string \| null`                          | The title of the product.                        |
+| price         | `string \| null`                          | The price of the product.                        |
+| imageUrl      | `string \| null`                          | The URL of the product image.                    |
+| rating        | `string \| null`                          | The rating of the product.                       |
+| ratingCount   | `string \| null`                          | The number of ratings the product has received.  |
+| details       | `Record<string, string \| null> \| null` | Additional details about the product.            |
+| description   | `string \| null`                          | A description of the product.                    |
+| features      | `string[]`                                | An array of features of the product.             |
+| reviews       | `Review[]`                                | An array of reviews for the product.             |
+
+## Review Interface
+
+| Property      | Type                                      | Description                                      |
+|---------------|-------------------------------------------|--------------------------------------------------|
+| rating        | `string \| null`                          | The rating given in the review.                  |
+| title         | `string \| null`                          | The title of the review.                         |
+| author        | `string \| null`                          | The author of the review.                        |
+| description   | `string \| null`                          | The content of the review.                       |
+| date          | `string \| null`                          | The date the review was written.                 |
+
 
 ## Future Features
 
