@@ -10,6 +10,22 @@
     "type": "git",
     "url": "https://github.com/manavk97/web-scrapify"
   },
+  "keywords": [
+    "web-scraper",
+    "scraping",
+    "scraper",
+    "extract",
+    "data-extraction",
+    "node-scraper",
+    "ecommerce-scraper",
+    "amazon-scraper",
+    "flipkart-scraper",
+    "web-crawler",
+    "scraping-library",
+    "typescript-scraper",
+    "ai-scraper",
+    "scraper-library"
+  ],
   "devDependencies": {
     "@types/node": "^22.10.2",
     "ts-node": "^10.9.2",
