@@ -8,6 +8,7 @@ import { Agents } from '../../agents/Agents';
 import { timer } from '../../utils/Utils';
 
 export class AmazonScraper extends ProductScraper {
+    
     constructor({
         baseUrl = AMAZON_BASE_URL,
         enableAgentRotations = false,
@@ -25,6 +26,31 @@ export class AmazonScraper extends ProductScraper {
             timeout
         });
     }
+
+    search(query: Record<string, string>): AmazonScraper {
+        return this;
+    }
+    
+    filter(query: Record<string, string>): AmazonScraper {
+        return this;
+    }
+
+    sort(query: Record<string, string>): AmazonScraper {
+        return this;
+    }
+
+    buildURL(): string {
+        return '';
+    }
+
+    async scrapListings(url: string = this.buildURL()): Promise<Product[]> {
+        const method = async (url: string) => {
+           return [];
+        }
+
+        return timer(() => method(url), this.timeout);
+    }
+
 
     async scrape(url: string): Promise<Product | null> {
         const method = async (url: string) => {

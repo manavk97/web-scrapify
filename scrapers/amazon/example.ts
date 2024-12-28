@@ -26,14 +26,14 @@ scraper.scrape(productURL1).then((data) => {
     console.log(data);
 });
 
-const productURL2 = "Amazon-Brand-Solimo-Heavy-Sponges/dp/B08RFCCBR1/ref=pd_bxgy_thbs_d_sccl_1/136-5125776-7388606?pd_rd_w=TOz4j&content-id=amzn1.sym.53b72ea0-a439-4b9d-9319-7c2ee5c88973&pf_rd_p=53b72ea0-a439-4b9d-9319-7c2ee5c88973&pf_rd_r=GQFH921Z1AC7BZX3V1P6&pd_rd_wg=K3wG5&pd_rd_r=e70877de-f42e-420f-8f95-8fb654c160c2&pd_rd_i=B08RFCCBR1&psc=1"
+// const productURL2 = "Amazon-Brand-Solimo-Heavy-Sponges/dp/B08RFCCBR1/ref=pd_bxgy_thbs_d_sccl_1/136-5125776-7388606?pd_rd_w=TOz4j&content-id=amzn1.sym.53b72ea0-a439-4b9d-9319-7c2ee5c88973&pf_rd_p=53b72ea0-a439-4b9d-9319-7c2ee5c88973&pf_rd_r=GQFH921Z1AC7BZX3V1P6&pd_rd_wg=K3wG5&pd_rd_r=e70877de-f42e-420f-8f95-8fb654c160c2&pd_rd_i=B08RFCCBR1&psc=1"
 
-scraper.scrape(productURL2).then((data) => {
-    console.log(data);
-});
+// scraper.scrape(productURL2).then((data) => {
+//     console.log(data);
+// });
 
-const productURL3 = "Amazon-Brand-Solimo-Disinfecting-Wipes/dp/B07F246YG1/ref=pd_bxgy_thbs_d_sccl_2/136-5125776-7388606?pd_rd_w=TOz4j&content-id=amzn1.sym.53b72ea0-a439-4b9d-9319-7c2ee5c88973&pf_rd_p=53b72ea0-a439-4b9d-9319-7c2ee5c88973&pf_rd_r=GQFH921Z1AC7BZX3V1P6&pd_rd_wg=K3wG5&pd_rd_r=e70877de-f42e-420f-8f95-8fb654c160c2&pd_rd_i=B07F246YG1&psc=1"
+// const productURL3 = "Amazon-Brand-Solimo-Disinfecting-Wipes/dp/B07F246YG1/ref=pd_bxgy_thbs_d_sccl_2/136-5125776-7388606?pd_rd_w=TOz4j&content-id=amzn1.sym.53b72ea0-a439-4b9d-9319-7c2ee5c88973&pf_rd_p=53b72ea0-a439-4b9d-9319-7c2ee5c88973&pf_rd_r=GQFH921Z1AC7BZX3V1P6&pd_rd_wg=K3wG5&pd_rd_r=e70877de-f42e-420f-8f95-8fb654c160c2&pd_rd_i=B07F246YG1&psc=1"
 
-scraper.scrape(productURL3).then((data) => {
-    console.log(data);
-});
+// scraper.scrape(productURL3).then((data) => {
+//     console.log(data);
+// });

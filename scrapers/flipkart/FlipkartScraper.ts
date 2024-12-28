@@ -26,6 +26,30 @@ export class FlipkartScraper extends ProductScraper {
         });
     }
 
+    search(query: Record<string, string>): FlipkartScraper {
+        return this;
+    }
+
+    filter(query: Record<string, string>): FlipkartScraper {
+       return this;
+    }
+
+    sort(query: Record<string, string>): FlipkartScraper {
+        return this;
+    }
+
+    buildURL(): string {
+        return '';
+    }
+
+    async scrapListings(url: string = this.buildURL()): Promise<Product[]> {
+        const method = async (url: string) => {
+           return [];
+        }
+
+        return timer(() => method(url), this.timeout);
+    }
+
     async scrape(url: string): Promise<Product | null> {
         const method = async (url: string) => {
             try {
