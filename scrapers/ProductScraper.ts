@@ -19,8 +19,7 @@ export abstract class ProductScraper extends URLBuilder {
         headers,
         timeout
     }: ScraperHeaders) {
-        super(baseUrl);
-
+        super();
         this.baseUrl = baseUrl;
         this.url = '';
         this.enableAgentRotations = enableAgentRotations;
@@ -31,5 +30,5 @@ export abstract class ProductScraper extends URLBuilder {
 
     abstract scrape(url: string): Promise<Product | null>;
 
-    abstract scrapListings(url: string): Promise<Product[]>;
+    abstract scrapListings(url: string): Promise<Partial<Product>[]>;
 }

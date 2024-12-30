@@ -1,4 +1,5 @@
 export interface Product {
+    id : string | null,
     title: string | null;
     price: string | null;
     imageUrl: string | null;
