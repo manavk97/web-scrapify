@@ -5,8 +5,14 @@ import { FLIPKART_BASE_URL } from './Constants';
 import { Product } from '../Product';
 import { HeaderOptions } from '../Headers';
 import { Agents } from '../../agents/Agents';
-import { timer } from '../../utils/Utils';
+import { extractPid, timer } from '../../utils/Utils';
+import { FlipkartSearchOptions } from './FlipkartSearchOptions';
+import { FlipkartSortOptions } from './FlipkartSortOptions';
+import { FlipkartFilterOptions } from './FlipkartFilterOptions';
 
+/**
+ * FlipkartScraper class for scraping Flipkart product listings and details.
+ */
 export class FlipkartScraper extends ProductScraper {
     constructor({
         baseUrl = FLIPKART_BASE_URL,
@@ -26,6 +32,109 @@ export class FlipkartScraper extends ProductScraper {
         });
     }
 
+    /**
+     * Searches for products on Flipkart.
+     * 
+     * @param query - The search query.
+     * @returns The FlipkartScraper instance with the applied search.
+     */
+    search(query: FlipkartSearchOptions): FlipkartScraper {
+        if(query.search) {
+            this.searchURL = `${this.searchURL}&q=${encodeURIComponent(query.search)}`;
+        }
+        if(query.page) {
+            this.searchURL = `${this.searchURL}&page=${query.page}`;
+        }
+        return this;
+    }
+
+    /**
+     * Filters the search results based on the specified options.
+     * 
+     * @param query - The filter options.
+     * @returns The FlipkartScraper instance with the applied filters.
+     */
+    filter(query: FlipkartFilterOptions): FlipkartScraper {
+        if(query.price?.min) {
+            this.searchURL = `${this.searchURL}&p[]=facets.price_range.from=${query.price.min}`;
+        }
+        if(query.price?.max) {
+            this.searchURL = `${this.searchURL}&p[]=facets.price_range.to=${query.price.max}`;
+        }
+       return this;
+    }
+
+    /*
+     * Sorts the search results based on the specified option.
+     * 
+     * Available sort options: 
+     * - popularity for sorting by popularity
+     * - relevance for sorting by relevance
+     * - price_asc for sorting by price low to high
+     * - price_desc for sorting by price high to low
+     * - recency_desc for newest arrivals
+    */
+    sort(query: FlipkartSortOptions): FlipkartScraper {
+        if(query.sort) {
+            this.searchURL = `${this.searchURL}&sort=${query.sort}`;
+        }
+        return this;
+    }
+
+    /**
+     * Builds the final URL for the Flipkart search.
+     * 
+     * @returns The final URL for the Flipkart search.
+     */
+    buildURL(): string {
+        return `${this.baseUrl}/search?${this.searchURL}`;
+    }
+
+    /**
+     * Scrapes the listings from the Flipkart search results.
+     * 
+     * @param url - The URL to scrape.
+     * @returns The listings from the Flipkart search results.
+     */
+    async scrapListings(url: string = this.buildURL()): Promise<Partial<Product>[]> {
+        if (!url.includes(this.baseUrl)) {
+            url = `${this.baseUrl}/s?${url}`;
+        }
+
+        this.logger.info(`Scraping Flipkart listings.. ${url}`)
+
+        const method = async (url: string) => {
+            try {
+                const { data } = await axios.get(url, { headers: { ...this.headers } });
+                const $ = cheerio.load(data);
+                const listings = $('.slAVV4');
+                const list = listings.map((i, el) => {
+                    return {
+                        id: extractPid($(el).find('a').attr('href')) || null,
+                        title: $(el).find('.wjcEIp').text().trim() || null,
+                        price: $(el).find('.Nx9bqj').text().trim() || null,
+                        imageUrl: $(el).find('img').attr('src') || null,
+                        rating: $(el).find('.XQDdHH').text().trim() || null,
+                        ratingCount: $(el).find('.Wphh3N').text().trim() || null,
+                    };
+                }).get();
+                console.log(list);
+                return list;
+            } catch (error) {
+                this.logger.error('Error scraping Flipkart listings:', error);
+                return [];
+            }
+        }
+
+        return timer(() => method(url), this.timeout);
+    }
+
+    /**
+     * Scrapes the product details from the Flipkart product page.
+     * 
+     * @param url - The URL of the product page.
+     * @returns The product details from the Flipkart product page.
+     */
     async scrape(url: string): Promise<Product | null> {
         const method = async (url: string) => {
             try {
@@ -41,7 +150,9 @@ export class FlipkartScraper extends ProductScraper {
                 const { data } = await axios.get(`${this.baseUrl}/${url}`, {  headers: { ...this.headers } });
 
                 const $ = cheerio.load(data);
+                
                 const productInfo: Product = {
+                    id: extractPid($('.VJA3rP').attr('href')) || null,
                     title: $('h1._6EBuvT span').text().trim() || null,
                     price: $('div.Nx9bqj.CxhGGd').text().trim() || null,
                     imageUrl: $('img._0DkuPH').attr('src') || null,

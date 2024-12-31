@@ -2,14 +2,16 @@ import { RawAxiosRequestHeaders } from "axios";
 import { ScraperHeaders } from "./Headers";
 import { Product } from "./Product";
 import { Logger } from "../utils/Logger";
+import { URLBuilder } from "./URLBuilder";
 
-export abstract class ProductScraper {
+export abstract class ProductScraper extends URLBuilder {
     protected baseUrl: string;
     protected url: string;
     protected headers: RawAxiosRequestHeaders;
     protected enableAgentRotations: boolean;
     protected timeout: number;
     protected logger: Logger;
+
     constructor({
         baseUrl, 
         enableLogging,
@@ -17,6 +19,7 @@ export abstract class ProductScraper {
         headers,
         timeout
     }: ScraperHeaders) {
+        super();
         this.baseUrl = baseUrl;
         this.url = '';
         this.enableAgentRotations = enableAgentRotations;
@@ -26,4 +29,6 @@ export abstract class ProductScraper {
     }
 
     abstract scrape(url: string): Promise<Product | null>;
+
+    abstract scrapListings(url: string): Promise<Partial<Product>[]>;
 }
